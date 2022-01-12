@@ -21,6 +21,7 @@ public class ServerConnectClientThread extends Thread {
     public void run() {
         while (true) {
             try {
+                System.out.println("服务器和客户端 " + user.getUserId() + " 保持通信，读取信息");
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                 Message message = (Message)objectInputStream.readObject();
             } catch (IOException | ClassNotFoundException e) {

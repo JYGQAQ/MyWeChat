@@ -37,6 +37,7 @@ public class QQServer {
                     serverConnectClientThread.start();
                     ManageServerClientThread.addServerConnectClientThread(user.getUserId(), serverConnectClientThread);
                 } else {
+                    System.out.println("用户" + user.getUserId() + "登录失败");
                     message.setMesType(MessageType.MESSAGE_lOGIN_FAIL);
                     objectOutputStream.writeObject(message);
                     socket.close();
