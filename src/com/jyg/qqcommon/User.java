@@ -1,6 +1,7 @@
 package com.jyg.qqcommon;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class User implements Serializable {
 
@@ -32,5 +33,18 @@ public class User implements Serializable {
 
     public void setPasswd(String passwd) {
         this.passwd = passwd;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId.equals(user.userId) && Objects.equals(passwd, user.passwd);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, passwd);
     }
 }

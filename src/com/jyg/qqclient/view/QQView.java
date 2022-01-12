@@ -43,7 +43,7 @@ public class QQView {
                             key = Utility.readString(1);
                             switch (key) {
                                 case "1":
-                                    System.out.println("显示在线用户列表");
+//                                    System.out.println("显示在线用户列表");
                                     break;
                                 case "2":
                                     System.out.println("群发消息");
@@ -65,7 +65,7 @@ public class QQView {
                     break;
                 case "9":
                     loop = false;
-//                    System.out.println("退出系统");
+                    System.out.println("退出系统");
                     break;
             }
         }
