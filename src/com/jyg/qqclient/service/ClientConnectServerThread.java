@@ -41,7 +41,14 @@ public class ClientConnectServerThread extends Thread {
                         LocalDateTime sendTime = message.getSendTime();
                         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("y-M-d H:m:s");
                         System.out.println(dateTimeFormatter.format(sendTime) + " " + sender + " 对 " + receiver + " 说 " + content1);
-
+                        break;
+                    case MESSAGE_COMMON_GROUP:
+                        content1 = message.getContent();
+                        sender = message.getSender();
+                        sendTime = message.getSendTime();
+                        dateTimeFormatter = DateTimeFormatter.ofPattern("y-M-d H:m:s");
+                        System.out.println(dateTimeFormatter.format(sendTime) + " " + sender + " 对 大家伙 说 " + content1);
+                        break;
 
                 }
             } catch (Exception e) {

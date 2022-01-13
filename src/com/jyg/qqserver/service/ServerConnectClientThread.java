@@ -61,6 +61,15 @@ public class ServerConnectClientThread extends Thread {
                         Socket socket = serverConnectClientThread.socket;
                         ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(socket.getOutputStream());
                         objectOutputStream1.writeObject(message);
+                    case MESSAGE_COMMON_GROUP:
+                        String onlineList = ManageServerClientThread.getOnlineList();
+                        String[] list = onlineList.split(" ");
+                        for (String userId : list) {
+                            if (userId.equals(user.getUserId())) continue;
+                            ServerConnectClientThread serverConnectClientThread1 = ManageServerClientThread.getServerConnectClientThread(userId);
+                            ObjectOutputStream objectOutputStream2 = new ObjectOutputStream(serverConnectClientThread1.socket.getOutputStream());
+                            objectOutputStream2.writeObject(message);
+                        }
 
                 }
             } catch (IOException | ClassNotFoundException e) {

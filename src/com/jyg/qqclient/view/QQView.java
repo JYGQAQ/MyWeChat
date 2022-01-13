@@ -65,12 +65,28 @@ public class QQView {
                                     }
                                     break;
                                 case "2":
-                                    System.out.println("群发消息");
+                                    System.out.println("请输入想对大家说的话: ");
+                                    String content1 = Utility.readString(100);
+                                    MessageClientService.sendMessageToAll(content1, userId);
+//                                    System.out.println("群发消息");
+                                    try {
+                                        Thread.sleep(50);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                     break;
                                 case "3":
                                     String id;
                                     System.out.println("请输入想私聊的用户号(在线)");
                                     id = Utility.readString(50);
+//                                    while (true) {
+//                                        System.out.println("请输入想发送的信息");
+//                                        String content = Utility.readString(100);
+//                                        if (content.equals("结束")) {
+//
+//                                        }
+//                                        MessageClientService.sendMessageToOne(content, userId, id);
+//                                    }
                                     System.out.println("请输入想发送的信息");
                                     String content = Utility.readString(100);
                                     MessageClientService.sendMessageToOne(content, userId, id);
