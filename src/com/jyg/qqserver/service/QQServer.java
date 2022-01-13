@@ -26,6 +26,10 @@ public class QQServer {
         validUser.put(new User("菩提老祖", "123456"), false);
     }
 
+    public static ConcurrentHashMap<User, Boolean> getValidUser() {
+        return validUser;
+    }
+
     public QQServer() {
         System.out.println("服务端在9999端口监听...");
         try {
