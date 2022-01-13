@@ -17,6 +17,7 @@ public class UserClientService {
     //向服务器端请求在线用户列表
     public void onlineList() {
         Message message = new Message();
+        message.setSender(user.getUserId());
         message.setMesType(MessageType.MESSAGE_GET_ONLINE_LIST);
 
         try {

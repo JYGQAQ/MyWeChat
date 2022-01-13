@@ -32,6 +32,12 @@ public class ServerConnectClientThread extends Thread {
                 switch (mesType) {
                     case MESSAGE_GET_ONLINE_LIST:
                         String content = ManageServerClientThread.getOnlineList();
+                        Message message1 = new Message();
+                        message1.setMesType(MessageType.MESSAGE_RETURN_LIST);
+                        message1.setContent(content);
+                        message.setReceiver(user.getUserId());
+                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                        objectOutputStream.writeObject(message1);
 //                        ConcurrentHashMap<User, Boolean> validUser = QQServer.getValidUser();
 //                        Set<Map.Entry<User, Boolean>> entries = validUser.entrySet();
 //                        for (Map.Entry<User, Boolean> entry : entries) {
@@ -42,7 +48,6 @@ public class ServerConnectClientThread extends Thread {
 //                                content += entry.getKey().getUserId();
 //                            }
 //                        }
-
                         break;
                 }
             } catch (IOException | ClassNotFoundException e) {

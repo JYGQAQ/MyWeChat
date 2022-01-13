@@ -30,6 +30,12 @@ public class QQView {
                     System.out.print("请输入密  码: ");
                     String pwd = Utility.readString(50);
 
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+
                     if (userClientService.checkUser(userId, pwd)) {
                         System.out.println("===============欢迎(用户 " + userId + " )==============");
                         while (loop) {
@@ -43,8 +49,13 @@ public class QQView {
                             key = Utility.readString(1);
                             switch (key) {
                                 case "1":
+                                    System.out.println("\n==================显示在线用户列表=================");
                                     userClientService.onlineList();
-//                                    System.out.println("显示在线用户列表");
+                                    try {
+                                        Thread.sleep(50);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                     break;
                                 case "2":
                                     System.out.println("群发消息");
