@@ -1,5 +1,6 @@
 package com.jyg.qqserver.service;
 
+import com.jyg.qqclient.service.ManageClientServerThread;
 import com.jyg.qqcommon.Message;
 import com.jyg.qqcommon.MessageType;
 import com.jyg.qqcommon.User;
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServerConnectClientThread extends Thread {
     private Socket socket;
     private User user;
+    private boolean loop = true;
 
     public ServerConnectClientThread(Socket socket, User user) {
         this.socket = socket;
@@ -23,7 +25,7 @@ public class ServerConnectClientThread extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (loop) {
             try {
                 System.out.println("服务器和客户端 " + user.getUserId() + " 保持通信，读取信息");
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
@@ -49,6 +51,12 @@ public class ServerConnectClientThread extends Thread {
 //                            }
 //                        }
                         break;
+                    case MESSAGE_CLIENT_EXIT:
+                        loop = false;
+                        objectInputStream.close();
+                        socket.close();
+                        ManageServerClientThread.deleteServerConnectClientThread(user.getUserId());
+
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();

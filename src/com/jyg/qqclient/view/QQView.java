@@ -1,7 +1,11 @@
 package com.jyg.qqclient.view;
 
+import com.jyg.qqclient.service.ClientConnectServerThread;
+import com.jyg.qqclient.service.ManageClientServerThread;
 import com.jyg.qqclient.service.UserClientService;
 import com.jyg.qqclient.utils.Utility;
+import com.jyg.qqserver.service.ManageServerClientThread;
+import com.jyg.qqserver.service.ServerConnectClientThread;
 
 public class QQView {
 
@@ -68,6 +72,8 @@ public class QQView {
                                     break;
                                 case "9":
                                     loop = false;
+                                    userClientService.exit();
+                                    System.exit(0);
                                     break;
                             }
                         }

@@ -10,6 +10,11 @@ public class ManageServerClientThread {
 
     private static HashMap<String, ServerConnectClientThread> map = new HashMap<>();
 
+    public static void deleteServerConnectClientThread(String userId) {
+        map.remove(userId);
+        return ;
+    }
+
     public static void addServerConnectClientThread(String userId, ServerConnectClientThread serverConnectClientThread) {
         map.put(userId, serverConnectClientThread);
     }

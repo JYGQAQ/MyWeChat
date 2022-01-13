@@ -14,6 +14,21 @@ public class UserClientService {
     private User user = new User();
     private Socket socket;
 
+
+    //关闭连接
+    public void exit() {
+        Message message = new Message();
+        message.setMesType(MessageType.MESSAGE_CLIENT_EXIT);
+        try {
+            OutputStream outputStream = socket.getOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     //向服务器端请求在线用户列表
     public void onlineList() {
         Message message = new Message();
