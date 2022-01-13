@@ -56,11 +56,13 @@ public class ServerConnectClientThread extends Thread {
                         objectInputStream.close();
                         socket.close();
                         ManageServerClientThread.deleteServerConnectClientThread(user.getUserId());
+                        break;
                     case MESSAGE_COMMON:
                         ServerConnectClientThread serverConnectClientThread = ManageServerClientThread.getServerConnectClientThread(message.getReceiver());
                         Socket socket = serverConnectClientThread.socket;
                         ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(socket.getOutputStream());
                         objectOutputStream1.writeObject(message);
+                        break;
                     case MESSAGE_COMMON_GROUP:
                         String onlineList = ManageServerClientThread.getOnlineList();
                         String[] list = onlineList.split(" ");
@@ -70,6 +72,7 @@ public class ServerConnectClientThread extends Thread {
                             ObjectOutputStream objectOutputStream2 = new ObjectOutputStream(serverConnectClientThread1.socket.getOutputStream());
                             objectOutputStream2.writeObject(message);
                         }
+                        break;
 
                 }
             } catch (IOException | ClassNotFoundException e) {
