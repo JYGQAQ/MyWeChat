@@ -56,6 +56,11 @@ public class ServerConnectClientThread extends Thread {
                         objectInputStream.close();
                         socket.close();
                         ManageServerClientThread.deleteServerConnectClientThread(user.getUserId());
+                    case MESSAGE_COMMON:
+                        ServerConnectClientThread serverConnectClientThread = ManageServerClientThread.getServerConnectClientThread(message.getReceiver());
+                        Socket socket = serverConnectClientThread.socket;
+                        ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(socket.getOutputStream());
+                        objectOutputStream1.writeObject(message);
 
                 }
             } catch (IOException | ClassNotFoundException e) {

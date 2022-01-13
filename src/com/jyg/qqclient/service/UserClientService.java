@@ -14,7 +14,6 @@ public class UserClientService {
     private User user = new User();
     private Socket socket;
 
-
     //关闭连接
     public void exit() {
         Message message = new Message();
@@ -23,6 +22,7 @@ public class UserClientService {
             OutputStream outputStream = socket.getOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
             objectOutputStream.writeObject(message);
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

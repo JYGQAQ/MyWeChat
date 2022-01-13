@@ -6,6 +6,8 @@ import com.jyg.qqcommon.MessageType;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ClientConnectServerThread extends Thread {
     private Socket socket;//持有和Server通信的socket
@@ -32,6 +34,13 @@ public class ClientConnectServerThread extends Thread {
                             System.out.println("用户: " + onlineList[i]);
                         }
                         break;
+                    case MESSAGE_COMMON:
+                        String content1 = message.getContent();
+                        String sender = message.getSender();
+                        String receiver = message.getReceiver();
+                        LocalDateTime sendTime = message.getSendTime();
+                        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("y-M-d H:m:s");
+                        System.out.println(dateTimeFormatter.format(sendTime) + " " + sender + " 对 " + receiver + " 说 " + content1);
 
 
                 }

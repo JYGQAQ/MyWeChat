@@ -2,10 +2,13 @@ package com.jyg.qqclient.view;
 
 import com.jyg.qqclient.service.ClientConnectServerThread;
 import com.jyg.qqclient.service.ManageClientServerThread;
+import com.jyg.qqclient.service.MessageClientService;
 import com.jyg.qqclient.service.UserClientService;
 import com.jyg.qqclient.utils.Utility;
 import com.jyg.qqserver.service.ManageServerClientThread;
 import com.jyg.qqserver.service.ServerConnectClientThread;
+
+import javax.rmi.CORBA.Util;
 
 public class QQView {
 
@@ -65,7 +68,18 @@ public class QQView {
                                     System.out.println("群发消息");
                                     break;
                                 case "3":
-                                    System.out.println("私聊消息");
+                                    String id;
+                                    System.out.println("请输入想私聊的用户号(在线)");
+                                    id = Utility.readString(50);
+                                    System.out.println("请输入想发送的信息");
+                                    String content = Utility.readString(100);
+                                    MessageClientService.sendMessageToOne(content, userId, id);
+                                    try {
+                                        Thread.sleep(50);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+//                                    System.out.println("私聊消息");
                                     break;
                                 case "4":
                                     System.out.println("发送文件");
