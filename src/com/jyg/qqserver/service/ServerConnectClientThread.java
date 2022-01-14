@@ -79,7 +79,6 @@ public class ServerConnectClientThread extends Thread {
                         String receiver = message.getReceiver();
                         Socket socket1  = new Socket(userIp, 10000);
                         InputStream inputStream = socket1.getInputStream();
-                        System.out.println(inputStream.getClass());
                         byte[] buffer = new byte[1024];
                         int length = 0;
                         FileOutputStream fileOutputStream = new FileOutputStream(new File("e:/temp" + fileName));

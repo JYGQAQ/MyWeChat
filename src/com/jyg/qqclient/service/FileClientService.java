@@ -39,13 +39,9 @@ public class FileClientService {
             FileInputStream fileInputStream = new FileInputStream(file);
             byte[] buffer = new byte[1024];
             int length = 0;
-            int sum = 0;
             while ((length = fileInputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, length);
-                sum += length;
-                System.out.println(length);
             }
-            System.out.println("sum = " + sum);
             fileInputStream.close();
             outputStream.close();
             socket1.close();
