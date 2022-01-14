@@ -3,11 +3,14 @@ package com.jyg.qqclient.service;
 import com.jyg.qqcommon.Message;
 import com.jyg.qqcommon.MessageType;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 public class ClientConnectServerThread extends Thread {
     private Socket socket;//持有和Server通信的socket
@@ -49,6 +52,24 @@ public class ClientConnectServerThread extends Thread {
                         dateTimeFormatter = DateTimeFormatter.ofPattern("y-M-d H:m:s");
                         System.out.println(dateTimeFormatter.format(sendTime) + " " + sender + " 对 大家伙 说 " + content1);
                         break;
+                    case MESSAGE_FILE:
+                        sender = message.getSender();
+//                        System.out.println("是否要接受文件, yes or no");
+//                        Scanner scanner = new Scanner(System.in);
+//                        String next = scanner.next();
+//                        if (! next.equals("yes")) break;
+                        Socket socket = new Socket(sender, 10001);
+                        InputStream inputStream = socket.getInputStream();
+                        FileOutputStream fileOutputStream = new FileOutputStream("e:/" + message.getReceiver() + message.getFileName());
+                        byte[] buffer = new byte[1024];
+                        int length = 0;
+                        while ((length = inputStream.read(buffer)) != -1) {
+                            fileOutputStream.write(buffer, 0, length);
+                            System.out.println(length);
+                        }
+                        inputStream.close();
+                        fileOutputStream.close();
+                        socket.close();
 
                 }
             } catch (Exception e) {

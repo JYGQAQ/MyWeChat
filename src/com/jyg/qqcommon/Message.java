@@ -13,6 +13,25 @@ public class Message implements Serializable {
     private LocalDateTime sendTime;//发送时间
     private MessageType mesType;//消息类型[可以再接口定义消息类型]
 
+    private String UserIp;
+    private String fileName;
+
+    public String getUserIp() {
+        return UserIp;
+    }
+
+    public void setUserIp(String userIp) {
+        UserIp = userIp;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public MessageType getMesType() {
         return mesType;
     }

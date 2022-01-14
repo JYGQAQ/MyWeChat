@@ -1,14 +1,12 @@
 package com.jyg.qqclient.view;
 
-import com.jyg.qqclient.service.ClientConnectServerThread;
-import com.jyg.qqclient.service.ManageClientServerThread;
-import com.jyg.qqclient.service.MessageClientService;
-import com.jyg.qqclient.service.UserClientService;
+import com.jyg.qqclient.service.*;
 import com.jyg.qqclient.utils.Utility;
 import com.jyg.qqserver.service.ManageServerClientThread;
 import com.jyg.qqserver.service.ServerConnectClientThread;
 
 import javax.rmi.CORBA.Util;
+import java.io.File;
 
 public class QQView {
 
@@ -36,13 +34,11 @@ public class QQView {
                     String userId = Utility.readString(50);
                     System.out.print("请输入密  码: ");
                     String pwd = Utility.readString(50);
-
 //                    try {
 //                        Thread.sleep(1000);
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
-
                     if (userClientService.checkUser(userId, pwd)) {
                         System.out.println("===============欢迎(用户 " + userId + " )==============");
                         while (loop) {
@@ -98,7 +94,12 @@ public class QQView {
 //                                    System.out.println("私聊消息");
                                     break;
                                 case "4":
-                                    System.out.println("发送文件");
+                                    System.out.println("请输入文件接受者");
+                                    String receiver = Utility.readString(100);
+                                    System.out.println("请输入要发送的文件(绝对路径)");
+                                    String fileName = Utility.readString(100);
+                                    FileClientService.sendFileToOne(userId, receiver, new File(fileName));
+//                                    System.out.println("发送文件");
                                     break;
                                 case "9":
                                     loop = false;

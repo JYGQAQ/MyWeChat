@@ -5,9 +5,9 @@ import com.jyg.qqcommon.Message;
 import com.jyg.qqcommon.MessageType;
 import com.jyg.qqcommon.User;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
 import java.util.Set;
@@ -73,6 +73,46 @@ public class ServerConnectClientThread extends Thread {
                             objectOutputStream2.writeObject(message);
                         }
                         break;
+                    case MESSAGE_FILE:
+                        String fileName = message.getFileName();
+                        String userIp = message.getUserIp();
+                        String receiver = message.getReceiver();
+                        Socket socket1  = new Socket(userIp, 10000);
+                        InputStream inputStream = socket1.getInputStream();
+                        System.out.println(inputStream.getClass());
+                        byte[] buffer = new byte[1024];
+                        int length = 0;
+                        FileOutputStream fileOutputStream = new FileOutputStream(new File("e:/temp" + fileName));
+                        while ((length = inputStream.read(buffer)) != -1) {
+                            fileOutputStream.write(buffer, 0, length);
+                        }
+                        fileOutputStream.close();
+                        inputStream.close();
+                        socket1.close();
+
+
+                        message.setSender(InetAddress.getLocalHost().getHostAddress());
+                        ServerConnectClientThread serverConnectClientThread1 = ManageServerClientThread.getServerConnectClientThread(receiver);
+                        if (serverConnectClientThread1 == null) {
+                            System.out.println("用户不在线");
+                            break;
+                        }
+                        Socket socket3 = serverConnectClientThread1.socket;
+                        ObjectOutputStream objectOutputStream2 = new ObjectOutputStream(socket3.getOutputStream());
+                        objectOutputStream2.writeObject(message);
+                        ServerSocket serverSocket = new ServerSocket(10001);
+                        Socket socket2 = serverSocket.accept();
+                        OutputStream outputStream = socket2.getOutputStream();
+                        FileInputStream fileinputStream2 = new FileInputStream(new File("e:/temp" + fileName));
+                        while ((length = fileinputStream2.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, length);
+                        }
+                        outputStream.close();
+                        socket2.close();
+                        serverSocket.close();
+                        fileinputStream2.close();
+
+
 
                 }
             } catch (IOException | ClassNotFoundException e) {
