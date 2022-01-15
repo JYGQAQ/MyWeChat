@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,6 +63,15 @@ public class ServerConnectClientThread extends Thread {
                         ManageServerClientThread.deleteServerConnectClientThread(user.getUserId());
                         break;
                     case MESSAGE_COMMON:
+                        if (!(isOnList(message.getReceiver()))) {
+                            ConcurrentHashMap<String, ArrayList<Message>> offlineMessage = QQServer.getOfflineMessage();
+                            if (!(offlineMessage.containsKey(message.getReceiver()))) {
+                                offlineMessage.put(message.getReceiver(), new ArrayList<>());
+                            }
+                            ArrayList<Message> arrayList = offlineMessage.get(message.getReceiver());
+                            arrayList.add(message);
+                            break;
+                        }
                         ServerConnectClientThread serverConnectClientThread = ManageServerClientThread.getServerConnectClientThread(message.getReceiver());
                         Socket socket = serverConnectClientThread.socket;
                         ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(socket.getOutputStream());
@@ -93,13 +103,22 @@ public class ServerConnectClientThread extends Thread {
                         inputStream.close();
                         socket1.close();
 
+                        if (!(isOnList(message.getReceiver()))) {
+                            ConcurrentHashMap<String, ArrayList<Message>> offlineMessage = QQServer.getOfflineMessage();
+                            if (!(offlineMessage.containsKey(message.getReceiver()))) {
+                                offlineMessage.put(message.getReceiver(), new ArrayList<>());
+                            }
+                            ArrayList<Message> arrayList = offlineMessage.get(message.getReceiver());
+                            arrayList.add(message);
+                            break;
+                        }
 
                         message.setSender(InetAddress.getLocalHost().getHostAddress());
                         ServerConnectClientThread serverConnectClientThread1 = ManageServerClientThread.getServerConnectClientThread(receiver);
-                        if (serverConnectClientThread1 == null) {
-                            System.out.println("用户不在线");
-                            break;
-                        }
+//                        if (serverConnectClientThread1 == null) {
+//                            System.out.println("用户不在线");
+//                            break;
+//                        }
                         Socket socket3 = serverConnectClientThread1.socket;
                         ObjectOutputStream objectOutputStream2 = new ObjectOutputStream(socket3.getOutputStream());
                         objectOutputStream2.writeObject(message);
@@ -123,5 +142,15 @@ public class ServerConnectClientThread extends Thread {
             }
 
         }
+    }
+
+    public boolean isOnList(String userId) {
+        String onlineList = ManageServerClientThread.getOnlineList();
+        String[] list = onlineList.split(" ");
+        for (String e : list) {
+            if (e.equals(userId))
+                return true;
+        }
+        return false;
     }
 }

@@ -5,9 +5,8 @@ import com.jyg.qqcommon.Message;
 import com.jyg.qqcommon.MessageType;
 import com.jyg.qqcommon.User;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -16,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class QQServer {
     private ServerSocket serverSocket = null;
     private static ConcurrentHashMap<User, Boolean> validUser = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, ArrayList<Message>> offlineMessage = new ConcurrentHashMap<>();
 
     static {
         validUser.put(new User("100", "123456"), false);
@@ -53,6 +53,8 @@ public class QQServer {
                     ServerConnectClientThread serverConnectClientThread = new ServerConnectClientThread(socket, user);
                     serverConnectClientThread.start();
                     ManageServerClientThread.addServerConnectClientThread(user.getUserId(), serverConnectClientThread);
+
+                    sendOfflineMessage(user.getUserId());
                 } else {
                     System.out.println("用户" + user.getUserId() + "登录失败");
                     message.setMesType(MessageType.MESSAGE_lOGIN_FAIL);
@@ -80,4 +82,66 @@ public class QQServer {
         return true;
     }
 
+    private void sendOfflineMessage(String userId) {
+        if (offlineMessage.containsKey(userId)) {
+            sendOfflineCommon(userId);
+            sendOfflineFile(userId);
+            offlineMessage.remove(userId);
+        }
+        return ;
+    }
+
+    private void sendOfflineCommon(String userId) {
+        ArrayList<Message> arrayList = offlineMessage.get(userId);
+        for (Message message : arrayList) {
+            if (message.getMesType() == MessageType.MESSAGE_COMMON) {
+                ServerConnectClientThread serverConnectClientThread = ManageServerClientThread.getServerConnectClientThread(userId);
+                Socket socket = serverConnectClientThread.getSocket();
+                try {
+                    OutputStream outputStream = socket.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                    objectOutputStream.writeObject(message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    public void sendOfflineFile(String userId) {
+        ArrayList<Message> arrayList = offlineMessage.get(userId);
+        for (Message message : arrayList) {
+            if (message.getMesType() == MessageType.MESSAGE_FILE) {
+                try {
+                    message.setSender(InetAddress.getLocalHost().getHostAddress());
+                    ServerConnectClientThread serverConnectClientThread = ManageServerClientThread.getServerConnectClientThread(userId);
+                    Socket socket = serverConnectClientThread.getSocket();
+                    OutputStream outputStream1 = socket.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream1);
+                    objectOutputStream.writeObject(message);
+                    ServerSocket serverSocket = new ServerSocket(10001);
+                    Socket socket2 = serverSocket.accept();
+                    OutputStream outputStream = socket2.getOutputStream();
+                    String fileName = message.getFileName();
+                    FileInputStream fileinputStream2 = new FileInputStream(new File("e:/temp" + fileName));
+                    byte[] buffer = new byte[1024];
+                    int length = 0;
+                    while ((length = fileinputStream2.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, length);
+                    }
+                    outputStream.close();
+                    socket2.close();
+                    serverSocket.close();
+                    fileinputStream2.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static ConcurrentHashMap<String, ArrayList<Message>> getOfflineMessage() {
+        return offlineMessage;
+    }
 }
