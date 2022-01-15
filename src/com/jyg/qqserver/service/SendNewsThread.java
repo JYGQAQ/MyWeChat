@@ -20,7 +20,7 @@ public class SendNewsThread extends Thread {
             Message message = new Message();
             message.setSender("服务器");
             message.setContent(news);
-            message.setMesType(MessageType.MESSAGE_COMMON);
+            message.setMesType(MessageType.MESSAGE_COMMON_GROUP);
             message.setSendTime(LocalDateTime.now());
             System.out.println("服务器推送消息给所有人 说： " + news);
 
