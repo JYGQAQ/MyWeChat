@@ -54,10 +54,10 @@ public class ClientConnectServerThread extends Thread {
                         break;
                     case MESSAGE_FILE:
                         sender = message.getSender();
-                        System.out.println("是否要接受文件, yes or no");
-                        Scanner scanner = new Scanner(System.in);
-                        String next = scanner.next();
-                        if (! next.equals("yes")) break;
+//                        System.out.println("是否要接受文件, yes or no");
+//                        Scanner scanner = new Scanner(System.in);
+//                        String next = scanner.next();
+//                        if (! next.equals("yes")) break;
                         Socket socket = new Socket(sender, 10001);
                         InputStream inputStream = socket.getInputStream();
                         FileOutputStream fileOutputStream = new FileOutputStream("e:/" + message.getReceiver() + message.getFileName());

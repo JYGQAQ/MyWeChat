@@ -32,6 +32,7 @@ public class QQServer {
 
     public QQServer() {
         System.out.println("服务端在9999端口监听...");
+        new SendNewsThread().start();
         try {
             serverSocket = new ServerSocket(9999);
 

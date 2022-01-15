@@ -94,9 +94,9 @@ public class QQView {
 //                                    System.out.println("私聊消息");
                                     break;
                                 case "4":
-                                    System.out.println("请输入文件接受者");
+                                    System.out.print("请输入文件接受者");
                                     String receiver = Utility.readString(100);
-                                    System.out.println("请输入要发送的文件(绝对路径)");
+                                    System.out.print("请输入要发送的文件(绝对路径)");
                                     String fileName = Utility.readString(100);
                                     FileClientService.sendFileToOne(userId, receiver, new File(fileName));
 //                                    System.out.println("发送文件");

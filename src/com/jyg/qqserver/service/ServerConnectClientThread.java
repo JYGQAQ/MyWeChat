@@ -23,6 +23,10 @@ public class ServerConnectClientThread extends Thread {
         this.user = user;
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
+
     @Override
     public void run() {
         while (loop) {
