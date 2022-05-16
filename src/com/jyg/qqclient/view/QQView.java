@@ -42,7 +42,7 @@ public class QQView {
                     if (userClientService.checkUser(userId, pwd)) {
                         System.out.println("===============欢迎(用户 " + userId + " )==============");
                         while (loop) {
-                            System.out.println("===============网络通信系统耳机菜单(用户 " + userId + ")登录==============");
+                            System.out.println("===============网络通信系统二级菜单(用户 " + userId + ")登录==============");
                             System.out.println("\t\t\t 1 显示在线用户列表");
                             System.out.println("\t\t\t 2 群发消息");
                             System.out.println("\t\t\t 3 私聊消息");
