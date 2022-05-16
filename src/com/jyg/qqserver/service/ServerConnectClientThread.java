@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -61,6 +62,8 @@ public class ServerConnectClientThread extends Thread {
                         objectInputStream.close();
                         socket.close();
                         ManageServerClientThread.deleteServerConnectClientThread(user.getUserId());
+                        ConcurrentHashMap<User, Boolean> validUser = QQServer.getValidUser();
+                        validUser.put(user, false);
                         break;
                     case MESSAGE_COMMON:
                         if (!(isOnList(message.getReceiver()))) {
@@ -133,8 +136,19 @@ public class ServerConnectClientThread extends Thread {
                         socket2.close();
                         serverSocket.close();
                         fileinputStream2.close();
-
-
+                        break;
+                    case QUERY_WORD:
+                        String content1 = message.getContent();
+                        QQServer.query(content1);
+                        Message message2 = new Message();
+                        message2.setMesType(MessageType.QUERY_WORD);
+                        message2.setContent(" " + QQServer.query(content1) + " ");
+                        message2.setSendTime(LocalDateTime.now());
+                        message2.setReceiver(message.getSender());
+                        message2.setSender("服务器");
+                        ObjectOutputStream objectOutputStream3 = new ObjectOutputStream(this.socket.getOutputStream());
+                        objectOutputStream3.writeObject(message2);
+                        break;
 
                 }
             } catch (IOException | ClassNotFoundException e) {

@@ -26,6 +26,13 @@ public class QQServer {
         validUser.put(new User("菩提老祖", "123456"), false);
     }
 
+    private static HashMap<String, String> dictionary = new HashMap<>();
+    static {
+        dictionary.put("abandon", "放弃");
+        dictionary.put("distributed system", "分布式系统");
+        dictionary.put("university", "大学");
+    }
+
     public static ConcurrentHashMap<User, Boolean> getValidUser() {
         return validUser;
     }
@@ -139,6 +146,11 @@ public class QQServer {
                 }
             }
         }
+    }
+
+    public static String query(String word) {
+        String ans = dictionary.getOrDefault(word, "抱歉，未查到该单词");
+        return ans;
     }
 
     public static ConcurrentHashMap<String, ArrayList<Message>> getOfflineMessage() {

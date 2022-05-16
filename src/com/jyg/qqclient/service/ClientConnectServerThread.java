@@ -69,6 +69,11 @@ public class ClientConnectServerThread extends Thread {
                         inputStream.close();
                         fileOutputStream.close();
                         socket.close();
+                        break;
+                    case QUERY_WORD:
+                        String content2 = message.getContent();
+                        System.out.println("服务器：该单词翻译为" + content2);
+
 
                 }
             } catch (Exception e) {

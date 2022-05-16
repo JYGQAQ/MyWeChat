@@ -2,7 +2,7 @@ package com.jyg.qqclient.service;
 
 import com.jyg.qqcommon.Message;
 import com.jyg.qqcommon.MessageType;
-import javafx.util.converter.LocalDateTimeStringConverter;
+//import javafx.util.converter.LocalDateTimeStringConverter;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -11,6 +11,21 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
 public class MessageClientService {
+
+    public static void queryWord(String word, String senderId, String receiver) {
+        Message message = new Message();
+        message.setMesType(MessageType.QUERY_WORD);
+        message.setSender(senderId);
+        message.setContent(word);
+        message.setReceiver(receiver);
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(ManageClientServerThread.getClientConnectServerThread(senderId).getSocket().getOutputStream());
+            objectOutputStream.writeObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ;
+    }
 
     public static void sendMessageToAll(String content, String senderId) {
         Message message = new Message();

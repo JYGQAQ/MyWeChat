@@ -47,6 +47,7 @@ public class QQView {
                             System.out.println("\t\t\t 2 群发消息");
                             System.out.println("\t\t\t 3 私聊消息");
                             System.out.println("\t\t\t 4 发送文件");
+                            System.out.println("\t\t\t 5 查询单词");
                             System.out.println("\t\t\t 9 退出系统");
                             System.out.print("请输入你的选择: ");
                             key = Utility.readString(1);
@@ -100,6 +101,16 @@ public class QQView {
                                     String fileName = Utility.readString(100);
                                     FileClientService.sendFileToOne(userId, receiver, new File(fileName));
 //                                    System.out.println("发送文件");
+                                    break;
+                                case "5":
+                                    System.out.println("请输入要查询的单词");
+                                    String word = Utility.readString(100);
+                                    MessageClientService.queryWord(word, userId, "服务器");
+                                    try {
+                                        new Thread().sleep(1000);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                     break;
                                 case "9":
                                     loop = false;
